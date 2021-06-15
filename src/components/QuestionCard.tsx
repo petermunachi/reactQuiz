@@ -1,10 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
+// Types
+import { AnswerObject } from '../App'; 
+
+// Styles
+import { Wrapper, ButtonWrapper } from './QuestionCard.styles';
+
 
 type Props = {
   question: string;
   answers: string[];
-  callback: any;
-  userAnswer: any;
+  callback: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  userAnswer: AnswerObject | undefined;
   questionNumber: number;
   totalQuestions: number;
 }
@@ -18,24 +26,37 @@ const QuestionCard: React.FC<Props> = ({
   totalQuestions
 }) => {
   return (
-    <div>
+    <Wrapper>
       <p className="number">
         Question: {questionNumber} / {totalQuestions}
       </p>
       <p dangerouslySetInnerHTML={{__html: question}} />
       <div>
 
-        {answers.map((answer) => (
-          <div>
-            <button disabled={userAnswer} onClick={callback}>
+        {answers.map((answer, index) => (
+          <ButtonWrapper
+            correct={userAnswer?.correctAnswer === answer}
+            userClicked={userAnswer?.answer === answer}
+            key={index}>
+            {/* converting userAnswer to boolean using !! equivalent is userAnswer ? true : false */}
+            <button disabled={!!userAnswer} value={answer} onClick={callback}>
               <span dangerouslySetInnerHTML={{ __html: answer }} />
             </button>
-          </div>
+          </ButtonWrapper>
         ))}
 
       </div>
-    </div>
+    </Wrapper>
   );
+}
+
+QuestionCard.propTypes = {
+  question: PropTypes.string.isRequired,
+  answers: PropTypes.array.isRequired,
+  callback: PropTypes.func.isRequired,
+  userAnswer: PropTypes.any,
+  questionNumber: PropTypes.number.isRequired,
+  totalQuestions: PropTypes.number.isRequired,
 }
 
 export default QuestionCard;

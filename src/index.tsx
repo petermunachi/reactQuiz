@@ -4,9 +4,32 @@ import './index.css';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
+import { createGlobalStyle } from 'styled-components';
+import BgImg from './images/img1.jpg';
+
+
+const GlobalStyle = createGlobalStyle`
+  html {
+    height: 100%;
+  }
+
+  body {
+    background-image: url(${BgImg});
+    background-size: cover;
+    margin: 0;
+    padding: 0 20px;
+    display: flex;
+    justify-content: center;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+`;
 
 ReactDOM.render(
   <React.StrictMode>
+    <GlobalStyle />
     <App />
   </React.StrictMode>,
   document.getElementById('root')
